@@ -1,10 +1,11 @@
 // import './App.css'
+import Paper from "./page"
 
 function App() {
 
   return (
     <>
-     Lets get started
+     <Paper/>
     </>
   )
 }
