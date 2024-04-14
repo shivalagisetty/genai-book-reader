@@ -12,7 +12,7 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { Typography } from '@mui/material';
 
 
-export default function PrimaryAppBar({setShowAudioCard, setVisualCard}) {
+export default function PrimaryAppBar({setShowAudioCard, setVisualCard, setTranslateCard}) {
 
     const iconStylesSx = { padding: 1, ml: 0 }
 
@@ -67,6 +67,7 @@ export default function PrimaryAppBar({setShowAudioCard, setVisualCard}) {
                                 aria-label="translate"
                                 color="inherit"
                                 sx={iconStylesSx}
+                                onClick={() => setTranslateCard(true)}
                             >
                                 <TranslateIcon />
                             </IconButton>

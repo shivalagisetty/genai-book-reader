@@ -1,12 +1,12 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import BootstrapDialog from './botstrapDialog';
 
 export default function VisualizeCard({ open, setOpen }) {
 
@@ -43,25 +43,18 @@ export default function VisualizeCard({ open, setOpen }) {
         )
 
     }
-    const handleClickOpen = () => {
-        setOpen(true);
-        if (visualsesOn) {
-            SetVisaulsOn(false)
-        }
-    };
 
     const handleClose = () => {
         setOpen(false);
     };
 
     return (
-        <Dialog
+        <BootstrapDialog
             open={open}
             onClose={handleClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
             width='xl'
-            sx={{borderRadius:'5rem' }}
         >
             <div style={visualsesOn ? { height: '75dvh', width: '75dvh', background:'gray'} : {}}>
                 <DialogTitle id="alert-dialog-title">
@@ -80,6 +73,6 @@ export default function VisualizeCard({ open, setOpen }) {
                 </IconButton>
                 {getDialogContent()}
             </div>
-        </Dialog>
+        </BootstrapDialog>
     );
 }
