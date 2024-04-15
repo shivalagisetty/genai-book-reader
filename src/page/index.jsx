@@ -9,6 +9,7 @@ function Paper() {
     const [showAudioCard, setShowAudioCard] = React.useState(false)
     const [showVisualCard, setShowVisualCard] = React.useState(false)
     const [showTranslateCard, SetShowTranslateCard] = React.useState(false)
+    const [selections, setSelections] = React.useState([])
 
     return (
         <>
@@ -16,7 +17,7 @@ function Paper() {
         {showAudioCard && <AudioCard/>}
         {showVisualCard && <VisualizeCard open={showVisualCard} setOpen={setShowVisualCard}/>}
         {showTranslateCard && <TranaslateCard open={showTranslateCard} setOpen={SetShowTranslateCard}/>}
-        <Page/>
+        <Page selections={selections} setSelections={setSelections}/>
         </>
     )
 }
