@@ -12,6 +12,7 @@ import Select from '@mui/material/Select';
 import { IconButton } from '@mui/material';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import CloseIcon from '@mui/icons-material/Close';
+import translateContent from '../actions/llm';
 
 export default function DialogSelect({ open, setOpen }) {
     const [translateFrom, setTranslateFrom] = React.useState('English');
@@ -35,6 +36,13 @@ export default function DialogSelect({ open, setOpen }) {
             setOpen(false);
         }
     };
+
+    React.useEffect(() => {
+        translateContent(
+            "This ebook is for the use of anyone anywhere in the United States and most other parts of the world at no cost and with almost no restrictions whatsoever.", 
+            "Hindi").then(res => console.log(res)
+            )
+    }, [])
 
     return (
         <div>
