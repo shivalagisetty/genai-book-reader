@@ -14,7 +14,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 export default function AudioCard() {
     const [isPlaying, setIsPlaying] = React.useState(false);
-    const [cardWidth, setCardWidth] = React.useState('47vh');
+    const [cardWidth, setCardWidth] = React.useState('58dvh');
     const [showCard, setShowCard] = React.useState(true);
     const [marginLeft, setMarginLeft] = React.useState('0.5rem');
     const [borderRadius, setBorderRadius] = React.useState('1rem');
@@ -28,7 +28,7 @@ export default function AudioCard() {
     }
 
     const onOpen = () => {
-        setCardWidth('47vh');
+        setCardWidth('58dvh');
         setMarginLeft('0.5rem')
         setBorderRadius('1rem')
         setShowCard(true);

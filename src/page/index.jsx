@@ -10,14 +10,20 @@ function Paper() {
     const [showVisualCard, setShowVisualCard] = React.useState(false)
     const [showTranslateCard, SetShowTranslateCard] = React.useState(false)
     const [selections, setSelections] = React.useState([])
-
+    const [location, setLocation] = React.useState(null)
+   React.useEffect(()=> {
+    if(localStorage.getItem('book-progress')){
+        setLocation(localStorage.getItem('book-progress'))
+    }
+   }, [])
+   
     return (
         <>
-        <PrimaryAppBar setShowAudioCard={setShowAudioCard} setVisualCard={setShowVisualCard} setTranslateCard={SetShowTranslateCard}/>
+        <PrimaryAppBar setShowAudioCard={setShowAudioCard} setVisualCard={setShowVisualCard} setTranslateCard={SetShowTranslateCard} location={location}/>
         {showAudioCard && <AudioCard/>}
         {showVisualCard && <VisualizeCard open={showVisualCard} setOpen={setShowVisualCard}/>}
         {showTranslateCard && <TranaslateCard open={showTranslateCard} setOpen={SetShowTranslateCard}/>}
-        <Page selections={selections} setSelections={setSelections}/>
+        <Page selections={selections} setSelections={setSelections} location={location} setLocation={setLocation}/>
         </>
     )
 }

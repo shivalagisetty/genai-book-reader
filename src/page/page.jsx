@@ -1,13 +1,42 @@
+import ePub from 'epubjs'
 import React, { useState } from 'react'
 import { ReactReader } from 'react-reader'
 
-const Page = ({selections, setSelections}) => {
+const Page = ({ selections, setSelections, location, setLocation }) => {
   // And your own state logic to persist state
-  const [location, setLocation] = useState(null)
-  const [rendition, setRendition] = useState()  
+  const [rendition, setRendition] = useState()
+  const [page, setPage] = useState('')
+  const tocRef = React.useRef(null)
+  // const [firstRenderDone, setFirstRenderDone] = useState(false)
   const locationChanged = epubcifi => {
     // epubcifi is a internal string used by epubjs to point to a location in an epub. It looks like this: epubcfi(/6/6[titlepage]!/4/2/12[pgepubid00003]/3:0)
-    setLocation(epubcifi)
+    setLocation(epubcifi);
+    getContent(epubcifi)
+    if (renditionRef.current && tocRef.current) {
+      const { displayed } = renditionRef.current.location.start
+      setPage(
+        `Page ${displayed.page} of ${displayed.total} of this chapter`
+      )
+    }
+    // if (!firstRenderDone) {
+    //   setLocation(localStorage.getItem('book-progress')) // getItem returns null if the item is not found.
+    //   setFirstRenderDone(true)
+    //   return
+    // }
+
+    // // This is the code that runs everytime the page changes, after the initial render.
+    // // Saving the current epubcifi on storage...
+    // localStorage.setItem('book-progress', epubcifi)
+  }
+  const renditionRef = React.useRef(null)
+  const getContent = (epubcifi) => {
+    // Get the body element
+    let body = document.body;
+
+    // Get the content of the body element
+    let content = body.innerHTML;
+
+    console.log(content);
   }
 
   React.useEffect(() => {
@@ -21,6 +50,7 @@ const Page = ({selections, setSelections}) => {
               cfiRange,
             })
           )
+          console.log(cfiRange)
           // rendition.annotations.add(
           //   'highlight',
           //   cfiRange,
@@ -38,20 +68,37 @@ const Page = ({selections, setSelections}) => {
         rendition?.off('selected', setRenderSelection)
       }
     }
-  }, [selections, rendition])
+  }, [selections, rendition, location])
 
   return (
-    <div style={{ height: '80vh' }}>
-      <ReactReader
-        showToc = {false} 
-        location={location}
-        locationChanged={locationChanged}
-        url="https://react-reader.metabits.no/files/alice.epub"
-        getRendition={(_rendition) => {
-          setRendition(_rendition)
+    <>
+      <div className="react-reader-book"
+        style={{ height: '80vh' }}>
+        <ReactReader
+          location={location}
+          locationChanged={locationChanged}
+          url="https://react-reader.metabits.no/files/alice.epub"
+          getRendition={(_rendition) => {
+            renditionRef.current = _rendition
+            setRendition(_rendition)
+          }}
+          tocChanged={toc => (tocRef.current = toc)}
+        />
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '1rem',
+          right: '1rem',
+          left: '1rem',
+          textAlign: 'center',
+          zIndex: 1
         }}
-      />
-    </div>
+      >
+        {page}
+      </div>
+    </>
+
   )
 }
 

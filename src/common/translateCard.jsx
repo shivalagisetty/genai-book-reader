@@ -27,8 +27,11 @@ export default function DialogSelect({ open, setOpen }) {
         setTranslateTo(Number(event.target.value) || '');
     };
 
-    const handleClickOpen = () => {
-        setOpen(true);
+    const handleSwap = () => {
+        const tF = translateFrom
+        const tt = translateTo
+        setTranslateFrom(tt);
+        setTranslateTo(tF);
     };
 
     const handleClose = (event, reason) => {
@@ -39,7 +42,7 @@ export default function DialogSelect({ open, setOpen }) {
 
     React.useEffect(() => {
         translateContent(
-            "This ebook is for the use of anyone anywhere in the United States and most other parts of the world at no cost and with almost no restrictions whatsoever.", 
+            "This ebook is for the use of anyone anywhere in the United States and most other parts of the world at no cost and with almost no restrictions whatsoever.",
             "Hindi").then(res => console.log(res)
             )
     }, [])
@@ -76,11 +79,11 @@ export default function DialogSelect({ open, setOpen }) {
                             >
                                 <MenuItem value={"English"}>English</MenuItem>
                                 <MenuItem value={"Hindi"}>Hindi</MenuItem>
-                                <MenuItem value={"Telugu"}>Telugu</MenuItem>
+                                <MenuItem value={"Spanish"}>Spanish</MenuItem>
                             </Select>
                         </FormControl>
                         <IconButton aria-label="swap">
-                            <SwapHorizIcon/>
+                            <SwapHorizIcon onClick={handleSwap}/>
                         </IconButton>
                         <FormControl sx={{ m: 1, minWidth: 200 }}>
                             <Select
@@ -91,14 +94,14 @@ export default function DialogSelect({ open, setOpen }) {
                             >
                                 <MenuItem value={"English"}>English</MenuItem>
                                 <MenuItem value={"Hindi"}>Hindi</MenuItem>
-                                <MenuItem value={"Telugu"}>Telugu</MenuItem>
+                                <MenuItem value={"Spanish"}>Spanish</MenuItem>
                             </Select>
                         </FormControl>
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} sx={{color : 'gray'}}>Cancel</Button>
-                    <Button onClick={handleClose} sx={{color : 'gray'}}>Translate</Button>
+                    <Button onClick={handleClose} sx={{ color: 'gray' }}>Cancel</Button>
+                    <Button onClick={handleClose} sx={{ color: 'gray' }}>Translate</Button>
                 </DialogActions>
             </BootstrapDialog>
         </div>

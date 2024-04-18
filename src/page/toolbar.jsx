@@ -12,7 +12,7 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { Typography } from '@mui/material';
 
 
-export default function PrimaryAppBar({setShowAudioCard, setVisualCard, setTranslateCard}) {
+export default function PrimaryAppBar({setShowAudioCard, setVisualCard, setTranslateCard, location}) {
 
     const iconStylesSx = { padding: 1, ml: 0 }
 
@@ -96,6 +96,7 @@ export default function PrimaryAppBar({setShowAudioCard, setVisualCard, setTrans
                                 aria-label="bookmark"
                                 color="inherit"
                                 sx={iconStylesSx}
+                                onClick={() => localStorage.setItem('book-progress', location)}
                             >
                                 <BookmarkBorderIcon />
                             </IconButton>
