@@ -10,9 +10,9 @@ export default async function translateContent(content, language) {
   `You are a expert translator who can translate text with great accuracy and who check word to word.
    so that any meaning and essence is not lost.
    translate this content ${content} to ${language} language.
-   expected output is JSON with a format.
+   expected output is JSON with a format.And make sure the response is parsable usin JSON.parse method
    JSON Format : {
-    translatedContent : "translated content"
+    "translatedContent" : "translated content"
    }
    --------------------------------------------
    output examples: 

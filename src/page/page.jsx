@@ -36,7 +36,7 @@ const Page = ({ selections, setSelections, location, setLocation }) => {
     // Get the content of the body element
     let content = body.innerHTML;
 
-    console.log(content);
+    // console.log(content);
   }
 
   React.useEffect(() => {
@@ -50,7 +50,7 @@ const Page = ({ selections, setSelections, location, setLocation }) => {
               cfiRange,
             })
           )
-          console.log(cfiRange)
+          // console.log(cfiRange)
           // rendition.annotations.add(
           //   'highlight',
           //   cfiRange,

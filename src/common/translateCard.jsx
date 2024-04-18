@@ -14,17 +14,19 @@ import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import CloseIcon from '@mui/icons-material/Close';
 import translateContent from '../actions/llm';
 
-export default function DialogSelect({ open, setOpen }) {
+export default function DialogSelect({ open, setOpen, highlihghtedContent }) {
     const [translateFrom, setTranslateFrom] = React.useState('English');
     const [translateTo, setTranslateTo] = React.useState('Hindi');
+    const [translatedContent, setTranslatedContent] = React.useState("");
+    const [referenceContent, setReferenceContent] = React.useState('')
 
 
     const handleChangeTF = (event) => {
-        setTranslateFrom(Number(event.target.value) || '');
+        setTranslateFrom(event.target.value);
     };
 
     const handleChangeTT = (event) => {
-        setTranslateTo(Number(event.target.value) || '');
+        setTranslateTo(event.target.value);
     };
 
     const handleSwap = () => {
@@ -41,11 +43,18 @@ export default function DialogSelect({ open, setOpen }) {
     };
 
     React.useEffect(() => {
-        translateContent(
-            "This ebook is for the use of anyone anywhere in the United States and most other parts of the world at no cost and with almost no restrictions whatsoever.",
-            "Hindi").then(res => console.log(res)
-            )
+        // translateContent(
+        //     "This ebook is for the use of anyone anywhere in the United States and most other parts of the world at no cost and with almost no restrictions whatsoever.",
+        //     "Hindi").then(res => console.log(res)
+        //     )
+        setReferenceContent(highlihghtedContent[0]?.text);
     }, [])
+
+    const onClickTranslateContent = () => {
+        translateContent(referenceContent, translateTo).then(llmOutput => {
+            setTranslatedContent(JSON.parse(llmOutput).translatedContent)
+        })
+    }
 
     return (
         <div>
@@ -69,7 +78,7 @@ export default function DialogSelect({ open, setOpen }) {
                     <DialogContentText id="alert-dialog-description">
                     </DialogContentText>
                     <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                        <FormControl sx={{ m: 1, width: 200 }}>
+                        <FormControl sx={{ m: 1, width: 230 }}>
                             <Select
                                 labelId="demo-dialog-select-label"
                                 id="demo-dialog-select"
@@ -85,7 +94,7 @@ export default function DialogSelect({ open, setOpen }) {
                         <IconButton aria-label="swap">
                             <SwapHorizIcon onClick={handleSwap}/>
                         </IconButton>
-                        <FormControl sx={{ m: 1, minWidth: 200 }}>
+                        <FormControl sx={{ m: 1, minWidth: 230, ml:'10px' }}>
                             <Select
                                 labelId="demo-dialog-select-label"
                                 id="demo-dialog-select"
@@ -97,11 +106,19 @@ export default function DialogSelect({ open, setOpen }) {
                                 <MenuItem value={"Spanish"}>Spanish</MenuItem>
                             </Select>
                         </FormControl>
+                        <div style={{display:'flex', flexDirection:'row', gap:'1.5rem'}}>
+                            <div style={{width:'230px',padding:'1rem'}}>
+                                {referenceContent}
+                            </div>
+                            <div style={{width:'230px',padding:'1rem'}}>
+                                {translatedContent}
+                            </div>
+                        </div> 
                     </Box>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} sx={{ color: 'gray' }}>Cancel</Button>
-                    <Button onClick={handleClose} sx={{ color: 'gray' }}>Translate</Button>
+                    <Button onClick={onClickTranslateContent} sx={{ color: 'gray' }}>Translate</Button>
                 </DialogActions>
             </BootstrapDialog>
         </div>

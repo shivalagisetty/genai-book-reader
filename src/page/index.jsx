@@ -22,7 +22,7 @@ function Paper() {
         <PrimaryAppBar setShowAudioCard={setShowAudioCard} setVisualCard={setShowVisualCard} setTranslateCard={SetShowTranslateCard} location={location}/>
         {showAudioCard && <AudioCard/>}
         {showVisualCard && <VisualizeCard open={showVisualCard} setOpen={setShowVisualCard}/>}
-        {showTranslateCard && <TranaslateCard open={showTranslateCard} setOpen={SetShowTranslateCard}/>}
+        {showTranslateCard && <TranaslateCard open={showTranslateCard} setOpen={SetShowTranslateCard} highlihghtedContent={selections}/>}
         <Page selections={selections} setSelections={setSelections} location={location} setLocation={setLocation}/>
         </>
     )

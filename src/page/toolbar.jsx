@@ -9,6 +9,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import TranslateIcon from '@mui/icons-material/Translate';
 import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { Typography } from '@mui/material';
 
 
@@ -17,6 +18,14 @@ export default function PrimaryAppBar({setShowAudioCard, setVisualCard, setTrans
     const iconStylesSx = { padding: 1, ml: 0 }
 
     const iconLabelFontSize = 10
+
+    const bookmark = localStorage.getItem('book-progress')
+
+    const [isBookmarked , setIsBookmarked] = React.useState(false)
+
+    React.useEffect(() => {
+        setIsBookmarked(bookmark === location)
+    },[location])
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -96,9 +105,12 @@ export default function PrimaryAppBar({setShowAudioCard, setVisualCard, setTrans
                                 aria-label="bookmark"
                                 color="inherit"
                                 sx={iconStylesSx}
-                                onClick={() => localStorage.setItem('book-progress', location)}
+                                onClick={() => {
+                                    localStorage.setItem('book-progress', location);
+                                    setIsBookmarked(true)
+                                }}
                             >
-                                <BookmarkBorderIcon />
+                                {(!isBookmarked) ? <BookmarkBorderIcon /> : <BookmarkIcon/>}
                             </IconButton>
                             <Typography fontSize={iconLabelFontSize} >
                                 Bookmark
