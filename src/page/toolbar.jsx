@@ -13,7 +13,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { Typography } from '@mui/material';
 
 
-export default function PrimaryAppBar({setShowAudioCard, setVisualCard, setTranslateCard, location}) {
+export default function PrimaryAppBar({setShowAudioCard, setVisualCard, setTranslateCard,setTextFormatCard, location}) {
 
     const iconStylesSx = { padding: 1, ml: 0 }
 
@@ -91,6 +91,7 @@ export default function PrimaryAppBar({setShowAudioCard, setVisualCard, setTrans
                                 aria-label="text format"
                                 color="inherit"
                                 sx={iconStylesSx}
+                                onClick={() => setTextFormatCard(true)}
                             >
                                 <FormatColorTextIcon />
                             </IconButton>

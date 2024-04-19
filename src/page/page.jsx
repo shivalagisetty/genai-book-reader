@@ -2,7 +2,7 @@ import ePub from 'epubjs'
 import React, { useState } from 'react'
 import { ReactReader } from 'react-reader'
 
-const Page = ({ selections, setSelections, location, setLocation }) => {
+const Page = ({ selections, setSelections, location, setLocation, fontStyles }) => {
   // And your own state logic to persist state
   const [rendition, setRendition] = useState()
   const [page, setPage] = useState('')
@@ -64,11 +64,14 @@ const Page = ({ selections, setSelections, location, setLocation }) => {
         }
       }
       rendition.on('selected', setRenderSelection)
+      rendition.themes.font(fontStyles.font)
+      rendition.themes.fontSize(fontStyles.fontSize)
+      rendition.themes.override('font-weight', `${fontStyles.fontWeight}`)
       return () => {
         rendition?.off('selected', setRenderSelection)
       }
     }
-  }, [selections, rendition, location])
+  }, [selections, rendition, location, fontStyles])
 
   return (
     <>

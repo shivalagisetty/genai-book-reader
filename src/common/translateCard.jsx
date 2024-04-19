@@ -43,10 +43,6 @@ export default function DialogSelect({ open, setOpen, highlihghtedContent }) {
     };
 
     React.useEffect(() => {
-        // translateContent(
-        //     "This ebook is for the use of anyone anywhere in the United States and most other parts of the world at no cost and with almost no restrictions whatsoever.",
-        //     "Hindi").then(res => console.log(res)
-        //     )
         setReferenceContent(highlihghtedContent[0]?.text);
     }, [])
 
