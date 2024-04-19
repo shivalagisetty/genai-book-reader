@@ -23,7 +23,8 @@ export default function TextFormatDialog({ open, setOpen, styles, setStyles }) {
             font : font,
             fontWeight : bold,
             fontSize : size
-        })
+        });
+        handleClose();
     }
 
     return (
