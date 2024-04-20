@@ -14,7 +14,7 @@ import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import CloseIcon from '@mui/icons-material/Close';
 import {translateContent} from '../actions/llm';
 
-export default function DialogSelect({ open, setOpen, highlihghtedContent , setGlbTranslateTo, setHighlightedContent  }) {
+export default function DialogSelect({ open, setOpen, highlihghtedContent , setGlbTranslateTo, setHighlightedContent, setTranslationTrigger  }) {
     const [translateFrom, setTranslateFrom] = React.useState('English');
     const [translateTo, setTranslateTo] = React.useState('Hindi');
     const [translatedContent, setTranslatedContent] = React.useState("");
@@ -48,6 +48,7 @@ export default function DialogSelect({ open, setOpen, highlihghtedContent , setG
     const onClickTranslateContent = () => {
         if(!highlihghtedContent.length){
             setGlbTranslateTo(translateTo)
+            setTranslationTrigger(Math.random());
             handleClose()
         }
        if(highlihghtedContent.length){
@@ -90,6 +91,10 @@ export default function DialogSelect({ open, setOpen, highlihghtedContent , setG
                                 <MenuItem value={"English"}>English</MenuItem>
                                 <MenuItem value={"Hindi"}>Hindi</MenuItem>
                                 <MenuItem value={"Spanish"}>Spanish</MenuItem>
+                                <MenuItem value={"Bengali"}>Bengali</MenuItem>
+                                <MenuItem value={"Odia"}>Odia</MenuItem>
+                                <MenuItem value={"Japanese"}>Japanese</MenuItem>
+
                             </Select>
                         </FormControl>
                         <IconButton aria-label="swap"  onClick={handleSwap}>
@@ -105,6 +110,10 @@ export default function DialogSelect({ open, setOpen, highlihghtedContent , setG
                                 <MenuItem value={"English"}>English</MenuItem>
                                 <MenuItem value={"Hindi"}>Hindi</MenuItem>
                                 <MenuItem value={"Spanish"}>Spanish</MenuItem>
+                                <MenuItem value={"Bengali"}>Bengali</MenuItem>
+                                <MenuItem value={"Odia"}>Odia</MenuItem>
+                                <MenuItem value={"Japanese"}>Japanese</MenuItem>
+
                             </Select>
                         </FormControl>
                         {highlihghtedContent && <div style={{display:'flex', flexDirection:'row', gap:'1.5rem'}}>

@@ -34,7 +34,7 @@ export default function VisualizeCard({ open, setOpen }) {
                 {
                     visualsesOn && <div style={{display:'flex', justifyContent:'center'}}>
                         <img
-                            src='src/assets/8ee780e2-c08c-4fca-8403-da38bf61e8ca.jpeg'
+                            src='src/assets/aliceImageGen.png'
                             width={450}
                             height={450} />
                     </div>
