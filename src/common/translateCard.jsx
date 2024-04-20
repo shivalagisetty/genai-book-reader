@@ -12,9 +12,9 @@ import Select from '@mui/material/Select';
 import { IconButton } from '@mui/material';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import CloseIcon from '@mui/icons-material/Close';
-import translateContent from '../actions/llm';
+import {translateContent} from '../actions/llm';
 
-export default function DialogSelect({ open, setOpen, highlihghtedContent }) {
+export default function DialogSelect({ open, setOpen, highlihghtedContent , setGlbTranslateTo, setHighlightedContent  }) {
     const [translateFrom, setTranslateFrom] = React.useState('English');
     const [translateTo, setTranslateTo] = React.useState('Hindi');
     const [translatedContent, setTranslatedContent] = React.useState("");
@@ -36,10 +36,9 @@ export default function DialogSelect({ open, setOpen, highlihghtedContent }) {
         setTranslateTo(tF);
     };
 
-    const handleClose = (event, reason) => {
-        if (reason !== 'backdropClick') {
+    const handleClose = () => {
             setOpen(false);
-        }
+            setHighlightedContent([])
     };
 
     React.useEffect(() => {
@@ -47,17 +46,23 @@ export default function DialogSelect({ open, setOpen, highlihghtedContent }) {
     }, [])
 
     const onClickTranslateContent = () => {
+        if(!highlihghtedContent.length){
+            setGlbTranslateTo(translateTo)
+            handleClose()
+        }
+       if(highlihghtedContent.length){
         translateContent(referenceContent, translateTo).then(llmOutput => {
             setTranslatedContent(JSON.parse(llmOutput).translatedContent)
         })
+       }
     }
 
     return (
         <div>
             <BootstrapDialog disableEscapeKeyDown open={open} onClose={handleClose}>
                 <DialogTitle>
-                    <div ><b>Translate</b></div>
-                    <span style={{ fontSize: '12px', marginLeft: "2px" }}>Kindly select the language yoy want this to translated to.</span>
+                    <div ><b>Translate {!highlihghtedContent.length && 'the page'}</b></div>
+                    {!highlihghtedContent.length && <span style={{ fontSize: '12px', marginLeft: "2px" }}>"Kindly select the language you wish to have this translated to."</span>}
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -87,8 +92,8 @@ export default function DialogSelect({ open, setOpen, highlihghtedContent }) {
                                 <MenuItem value={"Spanish"}>Spanish</MenuItem>
                             </Select>
                         </FormControl>
-                        <IconButton aria-label="swap">
-                            <SwapHorizIcon onClick={handleSwap}/>
+                        <IconButton aria-label="swap"  onClick={handleSwap}>
+                            <SwapHorizIcon/>
                         </IconButton>
                         <FormControl sx={{ m: 1, minWidth: 230, ml:'10px' }}>
                             <Select
@@ -102,14 +107,14 @@ export default function DialogSelect({ open, setOpen, highlihghtedContent }) {
                                 <MenuItem value={"Spanish"}>Spanish</MenuItem>
                             </Select>
                         </FormControl>
-                        <div style={{display:'flex', flexDirection:'row', gap:'1.5rem'}}>
+                        {highlihghtedContent && <div style={{display:'flex', flexDirection:'row', gap:'1.5rem'}}>
                             <div style={{width:'230px',padding:'1rem'}}>
                                 {referenceContent}
                             </div>
                             <div style={{width:'230px',padding:'1rem'}}>
                                 {translatedContent}
                             </div>
-                        </div> 
+                        </div> }
                     </Box>
                 </DialogContent>
                 <DialogActions>

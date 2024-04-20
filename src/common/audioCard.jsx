@@ -12,8 +12,8 @@ import Replay10Icon from '@mui/icons-material/Replay10';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
-export default function AudioCard() {
-    const [isPlaying, setIsPlaying] = React.useState(false);
+export default function AudioCard({ pageContent }) {
+    const [isPlaying, setIsPlaying] = React.useState(true);
     const [cardWidth, setCardWidth] = React.useState('58dvh');
     const [showCard, setShowCard] = React.useState(true);
     const [marginLeft, setMarginLeft] = React.useState('0.5rem');
@@ -33,12 +33,24 @@ export default function AudioCard() {
         setBorderRadius('1rem')
         setShowCard(true);
     }
+    const synth = window.speechSynthesis;
+    let utter;
+
+    React.useEffect(() => {
+        if(synth.speaking){
+            synth.cancel()
+        }
+        utter = new SpeechSynthesisUtterance(pageContent);
+        synth.speak(utter)
+        setIsPlaying(true)
+        
+    }, [pageContent])
 
     return (
         <Card sx={{
             zIndex: 3, position: 'absolute', display: 'flex',
             backgroundColor: 'lightgrey', width: cardWidth, borderRadius: borderRadius,
-            marginTop: '3rem', marginLeft:marginLeft
+            marginTop: '3rem', marginLeft: marginLeft
         }}>
             {showCard && <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <CardContent sx={{ flex: '1 0 auto', display: 'flex' }}>
@@ -60,12 +72,20 @@ export default function AudioCard() {
                     <IconButton aria-label="previous">
                         <Replay10Icon />
                     </IconButton>
-                    <IconButton aria-label="play/pause" onClick={() => setIsPlaying(!isPlaying)}>
-                        {isPlaying ?
-                            <PlayArrowIcon sx={{ height: 38, width: 38 }} /> :
+                    {isPlaying ?
+                        <IconButton aria-label="play/pause" onClick={() => {
+                            setIsPlaying(!isPlaying);
+                            synth.pause();
+                            }}>
                             <PauseIcon sx={{ height: 38, width: 38 }} />
-                        }
-                    </IconButton>
+                        </IconButton> :
+                        <IconButton aria-label="play/pause" onClick={() => {
+                            setIsPlaying(!isPlaying)
+                            synth.resume()
+                            }}>
+                            <PlayArrowIcon sx={{ height: 38, width: 38 }} />
+                        </IconButton>
+                    }
                     <IconButton aria-label="next">
                         <Forward10Icon />
                     </IconButton>
@@ -77,45 +97,10 @@ export default function AudioCard() {
                 </IconButton>
             </div>}
             {!showCard && <Box>
-                <IconButton aria-label="close" onClick={onOpen} sx={{height:'15rem'}}>
+                <IconButton aria-label="close" onClick={onOpen} sx={{ height: '15rem' }}>
                     <ArrowForwardIosIcon />
                 </IconButton>
             </Box>}
         </Card>
     );
 }
-
-// import React from 'react';
-// import useAudio from '../hooks/useAudio';
-// export default function Player() {
-    
-//   const { element, state, controls } = useAudio({
-//     src:
-//       'https://files.ceenaija.com/wp-content/uploads/music/2021/12/Jenn_Johnson_Bethel_-_Who_You_Are_CeeNaija.com_.mp3',
-//   });
-
-//   return (
-//     <div>
-//       {element}
-//       <button onClick={() => controls.seek(state.time - 10)}>-10 sec</button>
-//       <button
-//         onClick={() => {
-//           state.paused ? controls.play() : controls.pause();
-//         }}
-//       >
-//         {state.paused ? 'play' : 'pause'}
-//       </button>
-//       <button onClick={() => controls.seek(state.time + 10)}>+10 sec</button>
-//       <br />
-//       {Math.round(state.time)} / {Math.round(state.duration)}
-//       <br />
-//       Playback Speed (100 = 1)
-//       <br />
-//       <input
-//         onChange={e => controls.setPlaybackRate(e.target.value / 100)}
-//         type="number"
-//         value={state.playbackRate * 100}
-//       />
-//     </div>
-//   );
-// };

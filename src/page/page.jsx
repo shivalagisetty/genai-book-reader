@@ -1,42 +1,35 @@
 import ePub from 'epubjs'
 import React, { useState } from 'react'
 import { ReactReader } from 'react-reader'
+import { translateInnerHTML } from '../actions/llm'
 
-const Page = ({ selections, setSelections, location, setLocation, fontStyles }) => {
-  // And your own state logic to persist state
+const Page = ({ selections, setSelections, location, setLocation, fontStyles, setPageContent, pageContent }) => {
+
   const [rendition, setRendition] = useState()
   const [page, setPage] = useState('')
   const tocRef = React.useRef(null)
-  // const [firstRenderDone, setFirstRenderDone] = useState(false)
+
+  const renditionRef = React.useRef(null)
+
+  
+  const getContent = () => {
+    let body = document.getElementsByTagName('iframe');
+    let content = body[0].srcdoc;
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(content, "text/html");
+    const abody = doc.querySelector("body");
+    if(pageContent !== abody.textContent) setPageContent(abody.textContent)
+  }
+  
   const locationChanged = epubcifi => {
-    // epubcifi is a internal string used by epubjs to point to a location in an epub. It looks like this: epubcfi(/6/6[titlepage]!/4/2/12[pgepubid00003]/3:0)
     setLocation(epubcifi);
-    getContent(epubcifi)
+    getContent();
     if (renditionRef.current && tocRef.current) {
       const { displayed } = renditionRef.current.location.start
       setPage(
         `Page ${displayed.page} of ${displayed.total} of this chapter`
       )
     }
-    // if (!firstRenderDone) {
-    //   setLocation(localStorage.getItem('book-progress')) // getItem returns null if the item is not found.
-    //   setFirstRenderDone(true)
-    //   return
-    // }
-
-    // // This is the code that runs everytime the page changes, after the initial render.
-    // // Saving the current epubcifi on storage...
-    // localStorage.setItem('book-progress', epubcifi)
-  }
-  const renditionRef = React.useRef(null)
-  const getContent = (epubcifi) => {
-    // Get the body element
-    let body = document.body;
-
-    // Get the content of the body element
-    let content = body.innerHTML;
-
-    // console.log(content);
   }
 
   React.useEffect(() => {
@@ -50,23 +43,13 @@ const Page = ({ selections, setSelections, location, setLocation, fontStyles }) 
               cfiRange,
             })
           )
-          // console.log(cfiRange)
-          // rendition.annotations.add(
-          //   'highlight',
-          //   cfiRange,
-          //   {},
-          //   undefined,
-          //   'hl',
-          //   { fill: 'none', 'fill-opacity': '0.5', 'mix-blend-mode': 'multiply' }
-          // )
-          // const selection = contents.window.getSelection()
-          // selection?.removeAllRanges()
         }
       }
       rendition.on('selected', setRenderSelection)
       rendition.themes.font(fontStyles.font)
       rendition.themes.fontSize(fontStyles.fontSize)
       rendition.themes.override('font-weight', `${fontStyles.fontWeight}`)
+      // document.querySelector("iframe").setAttribute('srcDoc', "<div>Hi<div/>")
       return () => {
         rendition?.off('selected', setRenderSelection)
       }
@@ -75,7 +58,7 @@ const Page = ({ selections, setSelections, location, setLocation, fontStyles }) 
 
   return (
     <>
-      <div className="react-reader-book"
+      <div id="react-reader-book"
         style={{ height: '80vh' }}>
         <ReactReader
           location={location}
@@ -86,6 +69,7 @@ const Page = ({ selections, setSelections, location, setLocation, fontStyles }) 
             setRendition(_rendition)
           }}
           tocChanged={toc => (tocRef.current = toc)}
+          className='react-reader-content'
         />
       </div>
       <div
