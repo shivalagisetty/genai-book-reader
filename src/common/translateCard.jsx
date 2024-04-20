@@ -62,7 +62,7 @@ export default function DialogSelect({ open, setOpen, highlihghtedContent , setG
             <BootstrapDialog disableEscapeKeyDown open={open} onClose={handleClose}>
                 <DialogTitle>
                     <div ><b>Translate {!highlihghtedContent.length && 'the page'}</b></div>
-                    {!highlihghtedContent.length && <span style={{ fontSize: '12px', marginLeft: "2px" }}>"Kindly select the language you wish to have this translated to."</span>}
+                    {!highlihghtedContent.length && <span style={{ fontSize: '12px', marginLeft: "2px" }}>Kindly select the language you wish to have this translated to.</span>}
                 </DialogTitle>
                 <IconButton
                     aria-label="close"

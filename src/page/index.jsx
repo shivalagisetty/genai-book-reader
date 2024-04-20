@@ -36,7 +36,6 @@ function Paper() {
             const doc = parser.parseFromString(content, "text/html");
             const abody = doc.querySelector("body");
             const innerT = abody.innerHTML;
-            console.log("test")
             translateInnerHTML(innerT, glbTranslateTo).then(res => {
                 abody.innerHTML = res
                 document.querySelector("iframe").setAttribute('srcdoc', new XMLSerializer().serializeToString(doc))
