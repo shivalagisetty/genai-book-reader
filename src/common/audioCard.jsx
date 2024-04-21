@@ -37,12 +37,15 @@ export default function AudioCard({ pageContent }) {
     let utter;
 
     React.useEffect(() => {
-        if(isPlaying){
+        if(showCard){
             if(synth.speaking){
                 synth.cancel()
                 setProgress(0)
             }
             utter = new SpeechSynthesisUtterance(pageContent);
+            console.log(synth.getVoices())
+            // console.log(pageContent)
+            utter.lang = 'hi-IN'
             synth.speak(utter)
             setIsPlaying(true)
         }

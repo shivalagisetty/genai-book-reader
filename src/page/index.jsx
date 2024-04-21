@@ -5,9 +5,7 @@ import AudioCard from "../common/audioCard";
 import VisualizeCard from "../common/visualizeCard";
 import TranaslateCard from "../common/translateCard";
 import TextFormatDialog from "../common/textFormatDialog";
-import { translateInnerHTML } from "../actions/llm";
-import { Hourglass } from "react-loader-spinner";
-import BootstrapDialog from "../common/botstrapDialog";
+import { translatePageContent, translateInnerHTML } from "../actions/llm";
 import HourglassLoader from "../common/hourglassLoader";
 
 function Paper() {
@@ -46,6 +44,10 @@ function Paper() {
                 abody.innerHTML = res
                 document.querySelector("iframe").setAttribute('srcdoc', new XMLSerializer().serializeToString(doc))
                 setGlobalTranslation(false)
+            })
+            translatePageContent(pageContent, glbTranslateTo).then(res => {
+                console.log(res)
+                setPageContent(res)
             })
         }
     }, [translationTrigger])

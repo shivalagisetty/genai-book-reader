@@ -50,4 +50,19 @@ example:
   return text;
 }
 
-export default {translateContent, translateInnerHTML}
+export async function translatePageContent(content, language) {
+  const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+  const prompt = 
+  `You are a expert translator who can translate text with great accuracy and who check word to word.
+   so that any meaning and essence is not lost.
+   translate this content ${content} to ${language} language.
+   response : 
+  `
+  const result = await model.generateContent(prompt);
+  const response = result.response;
+  const text = response.text();
+  console.log(text);
+  return text;
+}
+
+export default {translateContent, translateInnerHTML, translatePageContent}
