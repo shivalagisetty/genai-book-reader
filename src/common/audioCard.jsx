@@ -37,14 +37,37 @@ export default function AudioCard({ pageContent }) {
     let utter;
 
     React.useEffect(() => {
-        if(synth.speaking){
-            synth.cancel()
+        if(isPlaying){
+            if(synth.speaking){
+                synth.cancel()
+                setProgress(0)
+            }
+            utter = new SpeechSynthesisUtterance(pageContent);
+            synth.speak(utter)
+            setIsPlaying(true)
         }
-        utter = new SpeechSynthesisUtterance(pageContent);
-        synth.speak(utter)
-        setIsPlaying(true)
-        
     }, [pageContent])
+    const [progress, setProgress] = React.useState(0);
+    const intervalRef = React.useRef(null); // Reference to store the interval
+  
+    React.useEffect(() => {
+      if (isPlaying) {
+        intervalRef.current = setInterval(() => {
+          setProgress((prevProgress) => {
+            if (prevProgress === 100) {
+              clearInterval(intervalRef.current);
+              return 100;
+            } else {
+              return prevProgress + 1;
+            }
+          });
+        }, 600);
+      } else {
+        clearInterval(intervalRef.current);
+      }
+  
+      return () => clearInterval(intervalRef.current);
+    }, [isPlaying]);
 
     return (
         <Card sx={{
@@ -67,7 +90,7 @@ export default function AudioCard({ pageContent }) {
                         </Typography>
                     </div>
                 </CardContent>
-                <LinearProgress variant="determinate" color="inherit" value={50} sx={{ ml: 1, mr: 1, borderRadius: 10 }} />
+                <LinearProgress variant="determinate" color="inherit" value={progress} sx={{ ml: 1, mr: 1, borderRadius: 10 }} />
                 <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1, justifyContent: 'center' }}>
                     <IconButton aria-label="previous">
                         <Replay10Icon />

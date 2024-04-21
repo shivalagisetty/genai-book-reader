@@ -19,6 +19,7 @@
     "epubjs": "^0.3.93",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-loader-spinner": "^6.1.6",
     "react-reader": "^2.0.9"
   },
   "devDependencies": {

@@ -6,6 +6,9 @@ import VisualizeCard from "../common/visualizeCard";
 import TranaslateCard from "../common/translateCard";
 import TextFormatDialog from "../common/textFormatDialog";
 import { translateInnerHTML } from "../actions/llm";
+import { Hourglass } from "react-loader-spinner";
+import BootstrapDialog from "../common/botstrapDialog";
+import HourglassLoader from "../common/hourglassLoader";
 
 function Paper() {
     const [showAudioCard, setShowAudioCard] = React.useState(false)
@@ -22,6 +25,7 @@ function Paper() {
     const [glbTranslateTo, setGlbTranslateTo] = React.useState(null);
     const [pageContent, setPageContent] = React.useState("")
     const [translationTrigger, setTranslationTrigger] = React.useState(false)
+    const [globalTranslating, setGlobalTranslation] = React.useState(false)
 
     React.useEffect(() => {
         if (localStorage.getItem('book-progress')) {
@@ -37,9 +41,11 @@ function Paper() {
             const doc = parser.parseFromString(content, "text/html");
             const abody = doc.querySelector("body");
             const innerT = abody.innerHTML;
+            setGlobalTranslation(true)
             translateInnerHTML(innerT, glbTranslateTo).then(res => {
                 abody.innerHTML = res
                 document.querySelector("iframe").setAttribute('srcdoc', new XMLSerializer().serializeToString(doc))
+                setGlobalTranslation(false)
             })
         }
     }, [translationTrigger])
@@ -49,8 +55,9 @@ function Paper() {
             <PrimaryAppBar setShowAudioCard={setShowAudioCard} setVisualCard={setShowVisualCard} setTranslateCard={setShowTranslateCard} setTextFormatCard={setShowTextFormatDialog} location={location} />
             {showAudioCard && <AudioCard pageContent={pageContent} />}
             {showVisualCard && <VisualizeCard open={showVisualCard} setOpen={setShowVisualCard} />}
-            {showTranslateCard && <TranaslateCard open={showTranslateCard} setOpen={setShowTranslateCard} highlihghtedContent={selections} setGlbTranslateTo={setGlbTranslateTo} setHighlightedContent={setSelections} setTranslationTrigger={setTranslationTrigger}/>}
+            {showTranslateCard && <TranaslateCard open={showTranslateCard} setOpen={setShowTranslateCard} highlihghtedContent={selections} setGlbTranslateTo={setGlbTranslateTo} setHighlightedContent={setSelections} setTranslationTrigger={setTranslationTrigger} />}
             {showTextFormatDialog && <TextFormatDialog open={showTextFormatDialog} setOpen={setShowTextFormatDialog} styles={fontStyles} setStyles={setFontStyles} />}
+            {globalTranslating && <HourglassLoader open={globalTranslating}/>}
             <Page selections={selections} setSelections={setSelections} location={location} setLocation={setLocation} fontStyles={fontStyles} setPageContent={setPageContent} pageContent={pageContent} />
         </>
     )

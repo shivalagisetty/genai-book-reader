@@ -12,13 +12,15 @@ import Select from '@mui/material/Select';
 import { IconButton } from '@mui/material';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import CloseIcon from '@mui/icons-material/Close';
-import {translateContent} from '../actions/llm';
+import { translateContent } from '../actions/llm';
+import { Hourglass } from 'react-loader-spinner';
 
-export default function DialogSelect({ open, setOpen, highlihghtedContent , setGlbTranslateTo, setHighlightedContent, setTranslationTrigger  }) {
+export default function DialogSelect({ open, setOpen, highlihghtedContent, setGlbTranslateTo, setHighlightedContent, setTranslationTrigger }) {
     const [translateFrom, setTranslateFrom] = React.useState('English');
     const [translateTo, setTranslateTo] = React.useState('Hindi');
     const [translatedContent, setTranslatedContent] = React.useState("");
-    const [referenceContent, setReferenceContent] = React.useState('')
+    const [referenceContent, setReferenceContent] = React.useState('');
+    const [translating, SetTranslating] = React.useState(false);
 
 
     const handleChangeTF = (event) => {
@@ -37,8 +39,8 @@ export default function DialogSelect({ open, setOpen, highlihghtedContent , setG
     };
 
     const handleClose = () => {
-            setOpen(false);
-            setHighlightedContent([])
+        setOpen(false);
+        setHighlightedContent([])
     };
 
     React.useEffect(() => {
@@ -46,16 +48,18 @@ export default function DialogSelect({ open, setOpen, highlihghtedContent , setG
     }, [])
 
     const onClickTranslateContent = () => {
-        if(!highlihghtedContent.length){
+        if (!highlihghtedContent.length) {
             setGlbTranslateTo(translateTo)
             setTranslationTrigger(Math.random());
             handleClose()
         }
-       if(highlihghtedContent.length){
-        translateContent(referenceContent, translateTo).then(llmOutput => {
-            setTranslatedContent(JSON.parse(llmOutput).translatedContent)
-        })
-       }
+        if (highlihghtedContent.length) {
+            SetTranslating(true);
+            translateContent(referenceContent, translateTo).then(llmOutput => {
+                SetTranslating(false)
+                setTranslatedContent(JSON.parse(llmOutput).translatedContent)
+            })
+        }
     }
 
     return (
@@ -97,10 +101,10 @@ export default function DialogSelect({ open, setOpen, highlihghtedContent , setG
 
                             </Select>
                         </FormControl>
-                        <IconButton aria-label="swap"  onClick={handleSwap}>
-                            <SwapHorizIcon/>
+                        <IconButton aria-label="swap" onClick={handleSwap}>
+                            <SwapHorizIcon />
                         </IconButton>
-                        <FormControl sx={{ m: 1, minWidth: 230, ml:'10px' }}>
+                        <FormControl sx={{ m: 1, minWidth: 230, ml: '10px' }}>
                             <Select
                                 labelId="demo-dialog-select-label"
                                 id="demo-dialog-select"
@@ -116,14 +120,24 @@ export default function DialogSelect({ open, setOpen, highlihghtedContent , setG
 
                             </Select>
                         </FormControl>
-                        {highlihghtedContent && <div style={{display:'flex', flexDirection:'row', gap:'1.5rem'}}>
-                            <div style={{width:'230px',padding:'1rem'}}>
+                        {highlihghtedContent && <div style={{ display: 'flex', flexDirection: 'row', gap: '1.5rem' }}>
+                            <div style={{ width: '230px', padding: '1rem' }}>
                                 {referenceContent}
                             </div>
-                            <div style={{width:'230px',padding:'1rem'}}>
-                                {translatedContent}
+                            <div style={{ width: '230px', padding: '1rem' }}>
+                                {translating ? <div style={{ alignSelf: "center", padding: '1rem', paddingLeft:'6rem' }}>
+                                    <Hourglass
+                                        visible={open}
+                                        height="30"
+                                        width="30"
+                                        ariaLabel="hourglass-loading"
+                                        wrapperStyle={{}}
+                                        wrapperClass=""
+                                        colors={['#306cce', '#72a1ed']}
+                                    />
+                                </div> : translatedContent}
                             </div>
-                        </div> }
+                        </div>}
                     </Box>
                 </DialogContent>
                 <DialogActions>
