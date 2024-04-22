@@ -61,7 +61,11 @@ export default function TextFormatDialog({ open, setOpen, styles, setStyles }) {
                             >
                                 <MenuItem value={"calibri"}>Calibri</MenuItem>
                                 <MenuItem value={"times new roman"}>Times New Roman</MenuItem>
-                                <MenuItem value={"Spanish"}>Spanish</MenuItem>
+                                <MenuItem value={"verdana"}>Verdana</MenuItem>
+                                <MenuItem value={"garamond"}>Garamond</MenuItem>
+                                <MenuItem value={"didot"}>Didot</MenuItem>
+                                <MenuItem value={"cambria"}>Cambria</MenuItem>
+
                             </Select>
                         </FormControl>
                         <FormControl sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '4rem', m: '0 1.5rem 1.5rem 1.5rem' }}>
